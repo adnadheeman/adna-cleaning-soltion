@@ -20,6 +20,23 @@ function initDatabase() {
         ];
         localStorage.setItem('adna_staff', JSON.stringify(initialStaff));
     }
+
+    if (!localStorage.getItem('adna_courses')) {
+        const initialCourses = [
+            { id: 1, title: 'Customer Etiquette', desc: 'Learn proper communication and professional behavior with clients.', category: 'Etiquette', icon: 'fas fa-play-circle' },
+            { id: 2, title: 'Chemical Safety', desc: 'Handling cleaning agents safely and effectively.', category: 'Safety', icon: 'fas fa-file-alt' },
+            { id: 3, title: 'Advanced Cleaning', desc: 'Modern techniques for deep cleaning and sanitization.', category: 'Cleaning', icon: 'fas fa-broom' }
+        ];
+        localStorage.setItem('adna_courses', JSON.stringify(initialCourses));
+    }
+
+    if (!localStorage.getItem('adna_reviews')) {
+        const initialReviews = [
+            { id: 1, customer: 'Ali Yasin', rating: 5, comment: 'Excellent deep cleaning service! The team was very professional.', date: '2026-10-20' },
+            { id: 2, customer: 'Hassan Nur', rating: 4, comment: 'Very good service, arrived on time.', date: '2026-10-22' }
+        ];
+        localStorage.setItem('adna_reviews', JSON.stringify(initialReviews));
+    }
 }
 
 // --- Utility Functions ---
@@ -41,6 +58,18 @@ function saveStaff(staffList) {
 
 function getCurrentUser() {
     return JSON.parse(localStorage.getItem('adna_current_user'));
+}
+
+function getCourses() {
+    return JSON.parse(localStorage.getItem('adna_courses') || '[]');
+}
+
+function saveCourses(courses) {
+    localStorage.setItem('adna_courses', JSON.stringify(courses));
+}
+
+function getReviews() {
+    return JSON.parse(localStorage.getItem('adna_reviews') || '[]');
 }
 
 function login(role, username) {
@@ -326,6 +355,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupAdminDashboard();
     setupStaffDashboard();
     setupStaffManagement();
+    setupCourseManagement();
 });
 
 // --- Sidebar Navigation & SPA Routing ---
@@ -356,13 +386,246 @@ function setupSidebarNavigation() {
                     // Specific renders
                     if (targetId === 'manage-staff') renderFullStaff();
                     if (targetId === 'bookings') renderFullBookings();
-                    if (targetId === 'assigned-work') renderFullAssignedWork();
+                    if (targetId === 'courses') renderFullCourses();
+                    if (targetId === 'reviews') renderFullReviews();
+                    if (targetId === 'earnings') renderAdminEarnings();
+                    if (targetId === 'reports') renderAdminReports();
+                    if (targetId === 'dashboard') {
+                        renderAdminMetrics();
+                        renderAdminBookings();
+                        renderAdminStaff();
+                    }
                 } else {
                     showToast(this.innerText.trim() + ' module is coming soon!');
                 }
             }
         });
     });
+}
+
+// --- Courses Management Logic ---
+function renderFullCourses() {
+    const courses = getCourses();
+    const container = document.getElementById('coursesGrid');
+    if (!container) return;
+    container.innerHTML = '';
+    
+    if (courses.length === 0) {
+        container.innerHTML = '<div style="grid-column: span 2; text-align: center; padding: 40px; background: white; border-radius: var(--radius-md); border: 1px dashed var(--border);">No courses available.</div>';
+        return;
+    }
+
+    courses.forEach(course => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.style = 'padding: 24px; position: relative;';
+        div.innerHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                <div style="width: 48px; height: 48px; background: var(--bg-main); color: var(--primary); display: flex; justify-content: center; align-items: center; border-radius: var(--radius-md); font-size: 1.5rem;">
+                    <i class="${course.icon || 'fas fa-graduation-cap'}"></i>
+                </div>
+                <div class="actions">
+                    <button onclick="editCourse(${course.id})" style="color: var(--primary); font-size: 0.9rem;"><i class="fas fa-edit"></i></button>
+                    <button onclick="deleteCourse(${course.id})" style="color: var(--danger); font-size: 0.9rem;"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            <h3>${course.title}</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 8px;">${course.desc}</p>
+            <div style="margin-top: 16px; display: flex; justify-content: space-between; align-items: center;">
+                <span class="badge badge-info">${course.category}</span>
+                <span style="font-size: 0.8rem; font-weight: 600; color: var(--primary);">8 Modules</span>
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function setupCourseManagement() {
+    const addBtn = document.getElementById('addCourseBtn');
+    if (addBtn) addBtn.addEventListener('click', () => openCourseModal());
+
+    const form = document.getElementById('courseForm');
+    if (form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveCourse();
+        });
+    }
+}
+
+function openCourseModal(course = null) {
+    const modal = document.getElementById('courseModal');
+    const title = document.getElementById('courseModalTitle');
+    const form = document.getElementById('courseForm');
+    
+    if (course) {
+        title.innerText = 'Edit Course';
+        document.getElementById('courseId').value = course.id;
+        document.getElementById('courseTitle').value = course.title;
+        document.getElementById('courseDesc').value = course.desc;
+        document.getElementById('courseCategory').value = course.category;
+    } else {
+        title.innerText = 'Add New Course';
+        form.reset();
+        document.getElementById('courseId').value = '';
+    }
+    modal.classList.add('active');
+}
+
+function closeCourseModal() {
+    document.getElementById('courseModal').classList.remove('active');
+}
+
+function saveCourse() {
+    const id = document.getElementById('courseId').value;
+    const title = document.getElementById('courseTitle').value;
+    const desc = document.getElementById('courseDesc').value;
+    const category = document.getElementById('courseCategory').value;
+    
+    let courses = getCourses();
+    
+    if (id) {
+        const idx = courses.findIndex(c => c.id == id);
+        if (idx !== -1) {
+            courses[idx].title = title;
+            courses[idx].desc = desc;
+            courses[idx].category = category;
+        }
+    } else {
+        courses.push({
+            id: Date.now(),
+            title: title,
+            desc: desc,
+            category: category,
+            icon: 'fas fa-graduation-cap'
+        });
+    }
+    
+    saveCourses(courses);
+    closeCourseModal();
+    renderFullCourses();
+    showToast('Course saved successfully!');
+}
+
+function deleteCourse(id) {
+    if (confirm('Are you sure you want to delete this course?')) {
+        let courses = getCourses();
+        courses = courses.filter(c => c.id != id);
+        saveCourses(courses);
+        renderFullCourses();
+        showToast('Course deleted.');
+    }
+}
+
+function editCourse(id) {
+    const courses = getCourses();
+    const course = courses.find(c => c.id == id);
+    if (course) openCourseModal(course);
+}
+
+// --- Reviews Logic ---
+function renderFullReviews() {
+    const reviews = getReviews();
+    const view = document.getElementById('view-reviews');
+    if (!view) return;
+    
+    // Find container or replace content
+    let container = view.querySelector('.reviews-container');
+    if (!container) {
+        const header = view.querySelector('h2');
+        const p = view.querySelector('p');
+        view.innerHTML = `<h2>Customer Reviews</h2><p style="color: var(--text-muted); margin-top: 8px;">Recent feedback from your clients.</p><div class="reviews-container" style="margin-top: 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;"></div>`;
+        container = view.querySelector('.reviews-container');
+    }
+    
+    container.innerHTML = '';
+    reviews.forEach(review => {
+        let stars = '';
+        for (let i = 0; i < 5; i++) {
+            stars += `<i class="fas fa-star" style="color: ${i < review.rating ? 'var(--warning)' : 'var(--border)'};"></i>`;
+        }
+        
+        const div = document.createElement('div');
+        div.style = 'padding: 24px; border: 1px solid var(--border); border-radius: var(--radius-md); background: white;';
+        div.innerHTML = `
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <strong>${review.customer}</strong>
+                <span>${stars}</span>
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-main);">"${review.comment}"</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 12px;">${review.date}</p>
+        `;
+        container.appendChild(div);
+    });
+}
+
+// --- Earnings & Reports Logic ---
+function renderAdminEarnings() {
+    const bookings = getBookings();
+    const total = bookings.reduce((sum, b) => sum + 85, 0); // Mock $85 per booking
+    const pending = bookings.filter(b => b.status === 'Pending').length * 85;
+    
+    const view = document.getElementById('view-earnings');
+    if (!view) return;
+    
+    view.innerHTML = `
+        <h2>Financial Overview</h2>
+        <div class="metrics-grid" style="margin-top: 24px;">
+            <div class="metric-card">
+                <div class="metric-icon green"><i class="fas fa-dollar-sign"></i></div>
+                <div class="metric-info">
+                    <p>Total Revenue</p>
+                    <h3>$${total.toLocaleString()}</h3>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon orange"><i class="fas fa-clock"></i></div>
+                <div class="metric-info">
+                    <p>Pending Payments</p>
+                    <h3>$${pending.toLocaleString()}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="table-wrapper" style="margin-top: 24px;">
+            <div class="table-header"><h3>Recent Transactions</h3></div>
+            <table>
+                <thead><tr><th>Customer</th><th>Service</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead>
+                <tbody>
+                    ${bookings.slice(0, 5).map(b => `
+                        <tr>
+                            <td>${b.customer}</td>
+                            <td>${b.service}</td>
+                            <td>${b.date}</td>
+                            <td>$85.00</td>
+                            <td><span class="badge badge-success">Paid</span></td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+}
+
+function renderAdminReports() {
+    const view = document.getElementById('view-reports');
+    if (!view) return;
+    
+    view.innerHTML = `
+        <h2>System Reports</h2>
+        <p style="color: var(--text-muted); margin-top: 8px;">Download monthly analytics and staff performance reports.</p>
+        <div style="margin-top: 24px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px;">
+            <div class="card">
+                <h3>Staff Performance</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 8px;">Average rating and completion rate per staff member.</p>
+                <button class="btn btn-outline" style="margin-top: 16px; width: 100%;"><i class="fas fa-download"></i> Download PDF</button>
+            </div>
+            <div class="card">
+                <h3>Revenue Analytics</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 8px;">Monthly growth and service distribution.</p>
+                <button class="btn btn-outline" style="margin-top: 16px; width: 100%;"><i class="fas fa-download"></i> Download PDF</button>
+            </div>
+        </div>
+    `;
 }
 
 // --- Staff Management Logic ---
