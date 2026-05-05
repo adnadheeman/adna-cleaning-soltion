@@ -325,6 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupBookingPage();
     setupAdminDashboard();
     setupStaffDashboard();
+    setupStaffManagement();
 });
 
 // --- Sidebar Navigation & SPA Routing ---
@@ -364,6 +365,102 @@ function setupSidebarNavigation() {
     });
 }
 
+// --- Staff Management Logic ---
+function setupStaffManagement() {
+    const addBtn = document.getElementById('addStaffBtn');
+    if (addBtn) {
+        addBtn.addEventListener('click', () => openStaffModal());
+    }
+
+    const staffForm = document.getElementById('staffForm');
+    if (staffForm) {
+        staffForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            saveStaffMember();
+        });
+    }
+}
+
+function openStaffModal(staff = null) {
+    const modal = document.getElementById('staffModal');
+    const title = document.getElementById('modalTitle');
+    const form = document.getElementById('staffForm');
+    
+    if (staff) {
+        title.innerText = 'Edit Staff Member';
+        document.getElementById('staffId').value = staff.id;
+        document.getElementById('staffName').value = staff.name;
+        document.getElementById('staffRole').value = staff.role;
+        document.getElementById('staffStatus').value = staff.status;
+    } else {
+        title.innerText = 'Add New Staff';
+        form.reset();
+        document.getElementById('staffId').value = '';
+    }
+    
+    modal.classList.add('active');
+}
+
+function closeStaffModal() {
+    document.getElementById('staffModal').classList.remove('active');
+}
+
+function saveStaffMember() {
+    const id = document.getElementById('staffId').value;
+    const name = document.getElementById('staffName').value;
+    const role = document.getElementById('staffRole').value;
+    const status = document.getElementById('staffStatus').value;
+    
+    let staffList = getStaff();
+    
+    if (id) {
+        // Update existing
+        const index = staffList.findIndex(s => s.id == id);
+        if (index !== -1) {
+            staffList[index].name = name;
+            staffList[index].role = role;
+            staffList[index].status = status;
+        }
+    } else {
+        // Add new
+        const newStaff = {
+            id: 'staff_' + Date.now(),
+            name: name,
+            role: role,
+            status: status,
+            img: '' // Placeholder for now
+        };
+        staffList.push(newStaff);
+    }
+    
+    saveStaff(staffList);
+    closeStaffModal();
+    renderFullStaff();
+    renderAdminMetrics();
+    renderAdminStaff();
+    showToast(id ? 'Staff updated successfully!' : 'New staff added successfully!');
+}
+
+function deleteStaffMember(id) {
+    if (confirm('Are you sure you want to delete this staff member?')) {
+        let staffList = getStaff();
+        staffList = staffList.filter(s => s.id != id);
+        saveStaff(staffList);
+        renderFullStaff();
+        renderAdminMetrics();
+        renderAdminStaff();
+        showToast('Staff member deleted.');
+    }
+}
+
+function editStaffMember(id) {
+    const staffList = getStaff();
+    const staff = staffList.find(s => s.id == id);
+    if (staff) {
+        openStaffModal(staff);
+    }
+}
+
 function renderFullStaff() {
     const staffList = getStaff();
     const tbody = document.getElementById('fullStaffTable');
@@ -387,8 +484,8 @@ function renderFullStaff() {
             <td>${staff.role}</td>
             <td>${statusBadge}</td>
             <td class="actions">
-                <button title="Edit" style="color: var(--primary);"><i class="fas fa-edit"></i></button>
-                <button title="Delete" style="color: var(--danger);"><i class="fas fa-trash"></i></button>
+                <button title="Edit" style="color: var(--primary);" onclick="editStaffMember('${staff.id}')"><i class="fas fa-edit"></i></button>
+                <button title="Delete" style="color: var(--danger);" onclick="deleteStaffMember('${staff.id}')"><i class="fas fa-trash"></i></button>
             </td>
         `;
         tbody.appendChild(tr);
