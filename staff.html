@@ -53,7 +53,7 @@
             <div class="topbar-actions">
                 <div style="display: flex; align-items: center; gap: 12px; background: white; padding: 8px 16px; border-radius: var(--radius-full); border: 1px solid var(--border);">
                     <span style="font-weight: 600; font-size: 0.9rem;">Status:</span>
-                    <select style="border: none; outline: none; background: transparent; font-weight: 600; color: var(--success); cursor: pointer;">
+                    <select id="staffStatusSelect" style="border: none; outline: none; background: transparent; font-weight: 600; color: var(--success); cursor: pointer;">
                         <option value="available" selected>Available</option>
                         <option value="busy">Busy</option>
                     </select>
@@ -65,6 +65,9 @@
                 </button>
             </div>
         </header>
+        
+        <!-- DASHBOARD SECTION -->
+        <div id="view-dashboard" class="staff-view">
         
         <!-- Metrics -->
         <div class="metrics-grid">
@@ -118,35 +121,8 @@
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div>
-                                    <span style="font-weight: 600;">Ahmed Ali</span>
-                                    <p style="font-size: 0.8rem; color: var(--text-muted);">Deep Cleaning</p>
-                                </div>
-                            </td>
-                            <td>Hodan District, Mogadishu</td>
-                            <td>Oct 24, 2026<br><span style="font-size: 0.8rem; color: var(--text-muted);">09:00 AM</span></td>
-                            <td><span class="badge badge-info">Upcoming</span></td>
-                            <td>
-                                <button class="btn btn-outline" style="padding: 4px 12px; font-size: 0.8rem;">Start Job</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div>
-                                    <span style="font-weight: 600;">Fatima Osman</span>
-                                    <p style="font-size: 0.8rem; color: var(--text-muted);">Residential</p>
-                                </div>
-                            </td>
-                            <td>Waberi, Mogadishu</td>
-                            <td>Oct 25, 2026<br><span style="font-size: 0.8rem; color: var(--text-muted);">02:00 PM</span></td>
-                            <td><span class="badge badge-warning">Pending Prep</span></td>
-                            <td>
-                                <button class="btn btn-outline" style="padding: 4px 12px; font-size: 0.8rem;">View Details</button>
-                            </td>
-                        </tr>
+                    <tbody id="staffBookingsTable">
+                        <!-- Populated by JS -->
                     </tbody>
                 </table>
             </div>
@@ -184,8 +160,96 @@
                 </div>
             </div>
         </div>
+        </div> <!-- END DASHBOARD SECTION -->
+
+        <!-- ASSIGNED WORK SECTION -->
+        <div id="view-assigned-work" class="staff-view" style="display: none; padding-top: 24px;">
+            <div class="table-header" style="background: white; padding: 24px; border-radius: var(--radius-md) var(--radius-md) 0 0; border-bottom: 1px solid var(--border);">
+                <h2>All Assigned Work</h2>
+            </div>
+            <div class="table-wrapper" style="border-radius: 0 0 var(--radius-md) var(--radius-md);">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Job Description</th>
+                            <th>Location</th>
+                            <th>Date & Time</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fullAssignedWorkTable">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TRAINING COURSES SECTION -->
+        <div id="view-training-courses" class="staff-view" style="display: none; padding-top: 24px;">
+            <div class="card">
+                <h2>My Training Courses</h2>
+                <div style="margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <div style="padding: 24px; border: 1px solid var(--border); border-radius: var(--radius-md);">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px;">
+                            <div style="width: 48px; height: 48px; background: var(--bg-main); color: var(--primary); display: flex; justify-content: center; align-items: center; border-radius: var(--radius-md); font-size: 1.5rem;">
+                                <i class="fas fa-broom"></i>
+                            </div>
+                            <span class="badge badge-success">Completed</span>
+                        </div>
+                        <h3>Advanced Cleaning Techniques</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 8px;">Learn modern techniques for deep cleaning.</p>
+                        <button class="btn btn-outline" style="margin-top: 16px; width: 100%;">View Certificate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EARNINGS SECTION -->
+        <div id="view-earnings" class="staff-view" style="display: none; padding-top: 24px;">
+            <div class="card">
+                <h2>My Earnings</h2>
+                <div class="metrics-grid" style="margin-top: 24px;">
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <p>This Month</p>
+                            <h3>$1,250</h3>
+                        </div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <p>Pending Payment</p>
+                            <h3>$350</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROFILE SETTINGS SECTION -->
+        <div id="view-profile-settings" class="staff-view" style="display: none; padding-top: 24px;">
+            <div class="card">
+                <h2>Profile Settings</h2>
+                <form style="margin-top: 24px; display: flex; flex-direction: column; gap: 16px; max-width: 500px;">
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px;">Full Name</label>
+                        <input type="text" value="Sarah Johnson" class="form-control" style="width: 100%;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px;">Email</label>
+                        <input type="email" value="sarah@adnacleaning.com" class="form-control" style="width: 100%;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px;">Phone Number</label>
+                        <input type="text" value="+252 61 234 5678" class="form-control" style="width: 100%;">
+                    </div>
+                    <button type="button" class="btn btn-primary" style="margin-top: 8px; width: fit-content;">Save Changes</button>
+                </form>
+            </div>
+        </div>
         
     </main>
 
+    <script src="app.js"></script>
 </body>
 </html>
