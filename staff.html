@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard - Adna Cleaning</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="icon-box" style="background: var(--primary); color: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem;">
+                <i class="fas fa-hand-sparkles"></i>
+            </div>
+            Staff Portal
+        </div>
+        
+        <nav class="nav-menu">
+            <a href="#" class="nav-item active"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a href="#" class="nav-item"><i class="fas fa-briefcase"></i> Assigned Work</a>
+            <a href="#" class="nav-item"><i class="fas fa-graduation-cap"></i> Training Courses</a>
+            <a href="#" class="nav-item"><i class="fas fa-wallet"></i> Earnings</a>
+            <a href="#" class="nav-item"><i class="fas fa-user-cog"></i> Profile Settings</a>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <a href="login.html" class="nav-item" style="color: var(--danger);"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <div style="margin-top: 16px;">
+                <div class="user-profile-sm">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100" alt="Sarah">
+                    <div>
+                        <p>Sarah Johnson</p>
+                        <p>Residential Expert</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- Topbar -->
+        <header class="topbar">
+            <div>
+                <h1 class="page-title">Welcome, Sarah!</h1>
+                <p style="color: var(--text-muted);">Here is your schedule and performance overview.</p>
+            </div>
+            
+            <div class="topbar-actions">
+                <div style="display: flex; align-items: center; gap: 12px; background: white; padding: 8px 16px; border-radius: var(--radius-full); border: 1px solid var(--border);">
+                    <span style="font-weight: 600; font-size: 0.9rem;">Status:</span>
+                    <select style="border: none; outline: none; background: transparent; font-weight: 600; color: var(--success); cursor: pointer;">
+                        <option value="available" selected>Available</option>
+                        <option value="busy">Busy</option>
+                    </select>
+                </div>
+                
+                <button class="icon-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+            </div>
+        </header>
+        
+        <!-- Metrics -->
+        <div class="metrics-grid">
+            <div class="metric-card animate-fade-in delay-100">
+                <div class="metric-icon blue"><i class="fas fa-briefcase"></i></div>
+                <div class="metric-info">
+                    <p>Upcoming Jobs</p>
+                    <h3>3</h3>
+                </div>
+            </div>
+            
+            <div class="metric-card animate-fade-in delay-200">
+                <div class="metric-icon teal"><i class="fas fa-check-double"></i></div>
+                <div class="metric-info">
+                    <p>Completed (This Month)</p>
+                    <h3>24</h3>
+                </div>
+            </div>
+            
+            <div class="metric-card animate-fade-in delay-300">
+                <div class="metric-icon green"><i class="fas fa-wallet"></i></div>
+                <div class="metric-info">
+                    <p>Net Earnings</p>
+                    <h3>$840</h3>
+                </div>
+            </div>
+            
+            <div class="metric-card animate-fade-in delay-300">
+                <div class="metric-icon orange"><i class="fas fa-star"></i></div>
+                <div class="metric-info">
+                    <p>Average Rating</p>
+                    <h3>4.9 <span style="font-size: 1rem; color: var(--text-muted);">/ 5</span></h3>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Grid -->
+        <div class="grid grid-cols-3 gap-6 animate-fade-in delay-300">
+            <!-- Assigned Work Table -->
+            <div class="table-wrapper" style="grid-column: span 2;">
+                <div class="table-header">
+                    <h3>Your Upcoming Schedule</h3>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Location</th>
+                            <th>Date & Time</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div>
+                                    <span style="font-weight: 600;">Ahmed Ali</span>
+                                    <p style="font-size: 0.8rem; color: var(--text-muted);">Deep Cleaning</p>
+                                </div>
+                            </td>
+                            <td>Hodan District, Mogadishu</td>
+                            <td>Oct 24, 2026<br><span style="font-size: 0.8rem; color: var(--text-muted);">09:00 AM</span></td>
+                            <td><span class="badge badge-info">Upcoming</span></td>
+                            <td>
+                                <button class="btn btn-outline" style="padding: 4px 12px; font-size: 0.8rem;">Start Job</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>
+                                    <span style="font-weight: 600;">Fatima Osman</span>
+                                    <p style="font-size: 0.8rem; color: var(--text-muted);">Residential</p>
+                                </div>
+                            </td>
+                            <td>Waberi, Mogadishu</td>
+                            <td>Oct 25, 2026<br><span style="font-size: 0.8rem; color: var(--text-muted);">02:00 PM</span></td>
+                            <td><span class="badge badge-warning">Pending Prep</span></td>
+                            <td>
+                                <button class="btn btn-outline" style="padding: 4px 12px; font-size: 0.8rem;">View Details</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Training Courses -->
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <div class="table-header">
+                    <h3>Required Training</h3>
+                    <a href="#" style="color: var(--primary); font-size: 0.8rem; font-weight: 600;">View All</a>
+                </div>
+                <div style="padding: 24px;">
+                    <div style="display: flex; gap: 16px; margin-bottom: 20px;">
+                        <div style="width: 80px; height: 60px; background: var(--bg-main); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.5rem;">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div>
+                            <h4 style="font-size: 1rem;">Customer Etiquette</h4>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Learn proper communication.</p>
+                            <div style="width: 100%; height: 6px; background: var(--border); border-radius: 3px;">
+                                <div style="width: 40%; height: 100%; background: var(--success); border-radius: 3px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 16px;">
+                        <div style="width: 80px; height: 60px; background: var(--bg-main); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.5rem;">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div>
+                            <h4 style="font-size: 1rem;">Chemical Safety</h4>
+                            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Handling cleaning agents safely.</p>
+                            <span class="badge badge-warning">Required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+
+</body>
+</html>

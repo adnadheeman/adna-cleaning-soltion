@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book a Service - Adna Cleaning</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-main">
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="nav-brand">
+                <div class="icon-box">
+                    <i class="fas fa-hand-sparkles"></i>
+                </div>
+                Adna Cleaning
+            </a>
+            
+            <div class="nav-links hidden-mobile">
+                <a href="index.html">Home</a>
+                <a href="index.html#services">Services</a>
+                <a href="index.html#staff">Our Staff</a>
+                <a href="index.html#about">About</a>
+            </div>
+            
+            <div class="nav-actions">
+                <a href="login.html" class="btn btn-outline" style="margin-right: 12px;">Login</a>
+                <a href="booking.html" class="btn btn-primary">Book Now</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Booking Form Section -->
+    <section class="booking-page">
+        <div class="container">
+            <div class="booking-container animate-fade-in">
+                <div class="booking-header">
+                    <span class="subtitle" style="color: var(--secondary); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9rem;">Ready to shine?</span>
+                    <h1 style="font-size: 2.5rem; margin-top: 8px;">Book Your Cleaning Service</h1>
+                    <p style="color: var(--text-muted); margin-top: 8px;">Fill out the form below to request a professional cleaner for your space.</p>
+                </div>
+
+                <form action="admin.html" method="GET">
+                    
+                    <h3 style="font-size: 1.2rem; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Personal Information</h3>
+                    <div class="grid grid-cols-2 gap-6" style="margin-bottom: 32px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" placeholder="e.g. Ahmed Ali" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" placeholder="e.g. +252 61 XXX XXXX" required>
+                        </div>
+                        <div class="form-group" style="grid-column: span 2; margin-bottom: 0;">
+                            <label class="form-label">Service Location (Address)</label>
+                            <input type="text" class="form-control" placeholder="e.g. Hodan District, Maka Al-Mukarama Road" required>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 1.2rem; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Service Details</h3>
+                    <div class="grid grid-cols-2 gap-6" style="margin-bottom: 32px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Service Type</label>
+                            <select class="form-control" required>
+                                <option value="" disabled selected>Select a service</option>
+                                <option value="residential">Residential Cleaning</option>
+                                <option value="commercial">Commercial Cleaning</option>
+                                <option value="deep-clean">Deep Sanitization</option>
+                                <option value="move-in-out">Move In/Out Cleaning</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Preferred Staff (Optional)</label>
+                            <select class="form-control">
+                                <option value="" selected>Any available staff</option>
+                                <option value="sarah">Sarah Johnson (Residential)</option>
+                                <option value="david">David Miller (Commercial)</option>
+                                <option value="aisha">Aisha Omar (General)</option>
+                                <option value="michael">Michael Chen (Deep Clean)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Preferred Date</label>
+                            <input type="date" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Preferred Time</label>
+                            <input type="time" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 1.2rem; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">Additional Notes</h3>
+                    <div class="form-group" style="margin-bottom: 32px;">
+                        <label class="form-label">Any special instructions for the cleaner?</label>
+                        <textarea class="form-control" placeholder="E.g., Please bring extra supplies for the windows, watch out for the dog..."></textarea>
+                    </div>
+                    
+                    <div style="background: var(--bg-main); padding: 24px; border-radius: var(--radius-md); margin-bottom: 32px; display: flex; align-items: flex-start; gap: 16px;">
+                        <i class="fas fa-info-circle" style="color: var(--primary); font-size: 1.5rem; margin-top: 4px;"></i>
+                        <div>
+                            <h4 style="font-size: 1rem; margin-bottom: 4px;">What happens next?</h4>
+                            <p style="font-size: 0.9rem; color: var(--text-muted);">Once you submit this form, our admin team will review your request and assign a staff member. You will receive a confirmation call shortly.</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1.1rem; padding: 16px;">
+                        Submit Booking Request <i class="fas fa-paper-plane" style="margin-left: 8px;"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Simplified for inner pages) -->
+    <footer class="footer" style="padding: 40px 0;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 24px; margin-bottom: 24px;">
+                <div class="footer-brand" style="margin-bottom: 0;">
+                    <h2 style="margin-bottom: 0; font-size: 1.5rem;"><i class="fas fa-hand-sparkles"></i> Adna Cleaning</h2>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom" style="padding-top: 0; border-top: none;">
+                <p>&copy; 2026 Adna Cleaning Solution. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
